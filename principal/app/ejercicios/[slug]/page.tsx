@@ -61,7 +61,7 @@ export default async function DetalleEjercicio({ params }: PageProps) {
 
         {/* Sección de Código Dinámica */}
         <section className="space-y-4">
-            <h2 className="text-2xl font-bold text-foreground">La Solución</h2>
+            <h2 className="text-2xl font-bold text-foreground">Solucion Intuitiva</h2>
             <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl">
                 <SyntaxHighlighter 
                 language="tsx" 
@@ -77,9 +77,30 @@ export default async function DetalleEjercicio({ params }: PageProps) {
                     backgroundColor: '#0f172a',   // Fondo personalizado si quieres ignorar el del tema
                 }}
                 >
-                {ejercicio.codigo}
+                {ejercicio.codigoIntuitivo}
                 </SyntaxHighlighter>
             </div>
+            <h2 className="text-2xl font-bold text-foreground">Solucion Optimizada</h2>
+            <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+                <SyntaxHighlighter 
+                language="tsx" 
+                style={vscDarkPlus}
+                showLineNumbers={true}         
+                lineNumberStyle={{ minWidth: '3em', paddingRight: '1em', color: '#4b5563' }}
+                wrapLines={true}           
+                customStyle={{
+                    margin: 0,
+                    padding: '1.5rem',
+                    fontSize: '0.9rem',
+                    borderRadius: '0.75rem',      // Bordes redondeados modernos
+                    backgroundColor: '#0f172a',   // Fondo personalizado si quieres ignorar el del tema
+                }}
+                >
+                {ejercicio.codigoOptimizado}
+                </SyntaxHighlighter>
+            </div>
+            <h2 className="text-2xl font-bold text-foreground">Concepto</h2>
+            <p className="text-lg text-secondary leading-relaxed max-w-3xl" >{ejercicio.concepto}</p>
         </section>
       </div>
     </div>
