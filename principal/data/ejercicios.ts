@@ -113,6 +113,238 @@ export const LISTA_EJERCICIOS: Ejercicio[] = [
     }`,
     concepto:
     `si quiero mostrar algo o no mostrarlo, es mas eficiente usar AND (&&) que usar operador ternario`
+  },
+  {
+    id: "3",
+    slug: "3-CambiarColor",
+    titulo: "Cambiar el color del fondo",
+    nivel: "Principiante",
+    descripcion: ".",
+    codigoIntuitivo: `
+    "use client";
+    import { useState } from "react";
+    
+    export default function CambiarColor () {
+        const [index, setIndex] = useState<number>(0);
+    
+        const colores: string[] = [
+    
+            "#FF5733", // Naranja vibrante
+            "#33FF57", // Verde lima
+            "#3357FF", // Azul real
+            "#F333FF", // Rosa fucsia
+            "#FFFF33", // Amarillo puro
+            "#33FFF5"  // Turquesa
+        ];
+    
+        function changeIndex () {
+        if (index > colores.length - 1 ) {
+            setIndex(0)
+        } else {
+            setIndex(index + 1)
+        }
+        }
+    
+        return (
+            <div>
+                <button onClick={changeIndex} className="bg-blue-600 p-4 rounded text-white"> Cambiar Color </button>
+                <div style = {{ backgroundColor: colores[index]}} className="mt-4 p-4 rounded bg-amber-500">hello</div>
+            </div>
+        )
+    }
+    `,
+    codigoOptimizado: `const add = () => setCounter(prev => prev + 1);`,
+    concepto: "Para evitar problemas con estados asíncronos o múltiples llamadas, usa siempre la función de callback (prev)."
+  },
+  {
+    id: "4",
+    slug: "4-InputControlado",
+    titulo: "Input de texto controlado",
+    nivel: "Principiante",
+    descripcion: "Sincronizar el valor de un input con el estado de React.",
+    codigoIntuitivo: `// Manejar valor por referencia o DOM directo`,
+    codigoOptimizado: `<input value={name} onChange={(e) => setName(e.target.value)} />`,
+    concepto: "React debe ser la 'única fuente de verdad' para los valores del formulario."
+  },
+  {
+    id: "5",
+    slug: "5-ManejoDeArrays",
+    titulo: "Añadir elementos a un Array",
+    nivel: "Principiante",
+    descripcion: "Agregar items a una lista sin mutar el estado original.",
+    codigoIntuitivo: `items.push(newItem); setItems(items);`,
+    codigoOptimizado: `setItems([...items, newItem]);`,
+    concepto: "En React el estado es inmutable; siempre crea una copia nueva con el operador spread."
+  },
+  {
+    id: "6",
+    slug: "6-LimpiezaEfectos",
+    titulo: "Cleanup en useEffect",
+    nivel: "Intermedio",
+    descripcion: "Evitar fugas de memoria (memory leaks) al usar event listeners o timers.",
+    codigoIntuitivo: `useEffect(() => { window.addEventListener('scroll', handle); }, [])`,
+    codigoOptimizado: `useEffect(() => { ... return () => window.removeEventListener('scroll', handle); }, [])`,
+    concepto: "Si abres una suscripción, debes cerrarla en la función de retorno del efecto."
+  },
+  {
+    id: "7",
+    slug: "7-FetchDeDatos",
+    titulo: "Fetching de Datos Básico",
+    nivel: "Intermedio",
+    descripcion: "Cómo cargar datos de una API al montar el componente.",
+    codigoIntuitivo: ``,
+    codigoOptimizado: ``,
+    concepto: "Manejar estados de 'loading', 'error' y 'data' es fundamental para una buena UX."
+  },
+  {
+    id: "8",
+    slug: "8-MultipleInputs",
+    titulo: "Objeto de Estado para Formularios",
+    nivel: "Intermedio",
+    descripcion: "Evitar tener 10 useStates para un formulario largo.",
+    codigoIntuitivo: `const [name, setName] = useState(''); const [email, setEmail] = useState('');`,
+    codigoOptimizado: `const [form, setForm] = useState({ name: '', email: '' });`,
+    concepto: "Agrupar estados relacionados reduce re-renders innecesarios y simplifica el código."
+  },
+  {
+    id: "9",
+    slug: "9-DerivedState",
+    titulo: "Estado Derivado",
+    nivel: "Intermedio",
+    descripcion: "No guardes en el estado algo que puedes calcular.",
+    codigoIntuitivo: `const [fullName, setFullName] = useState(firstName + lastName);`,
+    codigoOptimizado: `const fullName = firstName + ' ' + lastName;`,
+    concepto: "Si un valor se puede calcular desde las props o el estado existente, no lo metas en un useState."
+  },
+  {
+    id: "10",
+    slug: "10-CondicionalesComplejos",
+    titulo: "Early Return en Componentes",
+    nivel: "Intermedio",
+    descripcion: "Limpiar el JSX de condicionales anidados.",
+    codigoIntuitivo: `return ( <div> {isLoading ? <Spinner /> : <Data />} </div> )`,
+    codigoOptimizado: `if (isLoading) return <Spinner />; return <Data />;`,
+    concepto: "Los 'Early returns' hacen que el código principal sea más legible y plano."
+  },
+  {
+    id: "11",
+    slug: "11-CustomHook",
+    titulo: "Creación de un Custom Hook",
+    nivel: "Avanzado",
+    descripcion: "Extraer lógica reutilizable (ej: useWindowSize).",
+    codigoIntuitivo: ``,
+    codigoOptimizado: ``,
+    concepto: "Los hooks personalizados permiten compartir lógica de estado entre componentes sin repetir código."
+  },
+  {
+    id: "12",
+    slug: "12-UseMemo",
+    titulo: "Optimización con useMemo",
+    nivel: "Avanzado",
+    descripcion: "Memorizar cálculos pesados para evitar ejecuciones constantes.",
+    codigoIntuitivo: `const resultado = calculoPesado(data);`,
+    codigoOptimizado: `const resultado = useMemo(() => calculoPesado(data), [data]);`,
+    concepto: "Solo re-calcula cuando las dependencias cambian, ahorrando CPU."
+  },
+  {
+    id: "13",
+    slug: "13-UseCallback",
+    titulo: "Evitar re-renders con useCallback",
+    nivel: "Avanzado",
+    descripcion: "Pasar funciones a componentes hijos optimizados (React.memo).",
+    codigoIntuitivo: ``,
+    codigoOptimizado: ``,
+    concepto: "Evita que las funciones se re-creen en cada render, manteniendo la referencia estable."
+  },
+  {
+    id: "14",
+    slug: "14-UseRefDOM",
+    titulo: "Acceso al DOM con useRef",
+    nivel: "Intermedio",
+    descripcion: "Hacer focus en un input de manera programática.",
+    codigoIntuitivo: `document.getElementById('myInput').focus();`,
+    codigoOptimizado: `inputRef.current.focus();`,
+    concepto: "Usa refs para interactuar con el DOM de forma segura dentro del ciclo de vida de React."
+  },
+  {
+    id: "15",
+    slug: "15-UseReducer",
+    titulo: "Gestión de estado con useReducer",
+    nivel: "Avanzado",
+    descripcion: "Alternativa a useState para estados complejos.",
+    codigoIntuitivo: ``,
+    codigoOptimizado: ``,
+    concepto: "Ideal cuando la lógica del siguiente estado depende de múltiples factores o acciones."
+  },
+  {
+    id: "16",
+    slug: "16-ContextAPI",
+    titulo: "Pasar datos con Context API",
+    nivel: "Avanzado",
+    descripcion: "Evitar el 'Prop Drilling' (pasar props por 5 niveles).",
+    codigoIntuitivo: ``,
+    codigoOptimizado: ``,
+    concepto: "Provee una forma de compartir valores globalmente sin pasarlos manualmente por cada nivel."
+  },
+  {
+    id: "17",
+    slug: "17-DebounceSearch",
+    titulo: "Input con Debounce",
+    nivel: "Avanzado",
+    descripcion: "No disparar una búsqueda en cada tecla presionada.",
+    codigoIntuitivo: `onChange={(e) => fetch(e.target.value)}`,
+    codigoOptimizado: `// Uso de setTimeout o custom hook useDebounce`,
+    concepto: "Mejora el rendimiento y reduce costos de API esperando a que el usuario deje de escribir."
+  },
+  {
+    id: "18",
+    slug: "18-Portal",
+    titulo: "Modales con React Portals",
+    nivel: "Intermedio",
+    descripcion: "Renderizar componentes fuera de la jerarquía actual del DOM.",
+    codigoIntuitivo: ``,
+    codigoOptimizado: `createPortal(children, document.body)`,
+    concepto: "Útil para modales y tooltips para evitar problemas de 'z-index' y 'overflow: hidden'."
+  },
+  {
+    id: "19",
+    slug: "19-KeyUsage",
+    titulo: "El peligro de las Keys con Index",
+    nivel: "Intermedio",
+    descripcion: "Por qué no usar el índice del array como key.",
+    codigoIntuitivo: `items.map((it, index) => <li key={index}>...</li>)`,
+    codigoOptimizado: `items.map((it) => <li key={it.id}>...</li>)`,
+    concepto: "Las keys ayudan a React a identificar qué items cambiaron. El índice puede causar bugs visuales al reordenar."
+  },
+  {
+    id: "20",
+    slug: "20-Fragmentos",
+    titulo: "React Fragments",
+    nivel: "Principiante",
+    descripcion: "Agrupar elementos sin añadir nodos extra al DOM.",
+    codigoIntuitivo: `<div> <Comp1 /> <Comp2 /> </div>`,
+    codigoOptimizado: `<> <Comp1 /> <Comp2 /> </>`,
+    concepto: "Mantiene el HTML limpio y evita problemas de maquetación CSS (como en flexbox o grid)."
+  },
+  {
+    id: "21",
+    slug: "21-DinamismoClases",
+    titulo: "Clases Dinámicas (Template Literals)",
+    nivel: "Principiante",
+    descripcion: "Cambiar estilos CSS basados en el estado.",
+    codigoIntuitivo: ``,
+    codigoOptimizado: `className={\`p-4 \${active ? 'bg-blue' : 'bg-gray'}\`}`,
+    concepto: "Permite una UI reactiva que responde visualmente a las acciones del usuario."
+  },
+  {
+    id: "22",
+    slug: "22-ChildrenProp",
+    titulo: "Uso de la prop Children",
+    nivel: "Intermedio",
+    descripcion: "Crear componentes 'Wrapper' o contenedores.",
+    codigoIntuitivo: ``,
+    codigoOptimizado: `const Layout = ({ children }) => <div>{children}</div>`,
+    concepto: "Fomenta la composición de componentes, uno de los pilares de React."
   }
 
 ];
