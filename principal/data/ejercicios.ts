@@ -153,28 +153,171 @@ export const LISTA_EJERCICIOS: Ejercicio[] = [
         )
     }
     `,
-    codigoOptimizado: `const add = () => setCounter(prev => prev + 1);`,
-    concepto: "Para evitar problemas con estados asíncronos o múltiples llamadas, usa siempre la función de callback (prev)."
+    codigoOptimizado: `
+    "use client";
+    import { useState } from "react";
+    
+    export default function CambiarColor() {
+      const [index, setIndex] = useState<number>(0);
+    
+      const colores = [
+        "#FF5733", "#33FF57", "#3357FF", 
+        "#F333FF", "#FFFF33", "#33FFF5"
+      ];
+    
+      // Optimización 1: 
+
+      // la funcion se puede optimizar mucho usando simplemente setIndex (() => ()) 
+      // traducido significa 'el index se seteara del valor actual a lo siguiente'
+
+      // para trabajar con limites se usa el modulo (%) ¿que significa esto?
+      // lo que este a la derecha del % dividira al de la izquierda, si no cabe, el resultado sera la derecha,
+      // si cabe, el resultado sera el sobrante de esa division
+
+      const changeIndex = () => {
+        setIndex((prevIndex) => (prevIndex + 1) % colores.length);
+      };
+
+        // const changeIndex = () => {
+        // setIndex((prevIndex) => (prevIndex - 1 + colores.length) % colores.length);
+        // };
+        
+        // si quisiera hacerlo a la inversa
+    
+      return (
+        <div className="p-8">
+          <button 
+            onClick={changeIndex} 
+            className="bg-blue-600 p-4 rounded text-white active:scale-95 transition-transform"
+          >
+            Cambiar Color
+          </button>
+    
+          {/* Optimización 2: Estilos dinámicos limpios */}
+          <div 
+            style={{ backgroundColor: colores[index] }} 
+            className="mt-4 p-10 rounded shadow-lg text-white font-bold transition-colors duration-500"
+          >
+            Color actual: {colores[index]} (Índice: {index})
+          </div>
+        </div>
+      );
+    }`,
+    concepto: "."
   },
   {
     id: "4",
-    slug: "4-InputControlado",
-    titulo: "Input de texto controlado",
+    slug: "4-Contador",
+    titulo: "Contador",
     nivel: "Principiante",
-    descripcion: "Sincronizar el valor de un input con el estado de React.",
-    codigoIntuitivo: `// Manejar valor por referencia o DOM directo`,
-    codigoOptimizado: `<input value={name} onChange={(e) => setName(e.target.value)} />`,
-    concepto: "React debe ser la 'única fuente de verdad' para los valores del formulario."
+    descripcion: "Contador con disminuir, reiniciar y aumentar",
+    codigoIntuitivo: `
+    "use client"
+    import { useState } from 'react';
+    
+    export default function Contador () {
+        const [index, setIndex] = useState<number>(0);
+    
+        const increment = () => {
+            setIndex((prevIndex) => (prevIndex + 1));
+        };
+    
+        const decrement = () => {
+            if (index === 0) {
+                setIndex(0)
+            } else {
+                setIndex((prevIndex) => (prevIndex - 1))
+            }
+        };
+    
+        const reset = () => {
+            setIndex(0)
+        }
+    
+        return (
+            <div>
+                <div>{index}</div>
+                <button onClick = {increment}> Aumentar </button>
+                <button onClick = {decrement}> Disminuir </button>
+                <button onClick = {reset}> Reiniciar </button>
+            </div>
+        )
+    }`,
+    codigoOptimizado: `
+    "use client"
+    import { useState } from 'react';
+    
+    export default function Contador () {
+        const [count, setCount] = useState<number>(0);
+
+        //si es muy simple la funcion ni siquiera son necesarias las llaves {}
+        const increment = () => setCount(prev => prev + 1);
+    
+        const decrement = () => {
+            // Usamos Math.max para decir: "Elige el número más grande entre 0 y la resta"
+            // Esto garantiza que nunca baje de 0 en una sola línea.
+            setCount(prev => Math.max(0, prev - 1));
+        };
+
+        //si es muy simple la funcion ni siquiera son necesarias las llaves {}
+        const reset = () => setCount(0);
+    
+        return (
+            <div className="p-10 text-center">
+                <div className="text-4xl font-bold mb-4">{count}</div>
+                <div className="flex gap-2 justify-center">
+                    <button onClick={increment} className="bg-green-500 p-2 rounded text-white"> Aumentar </button>
+                    <button onClick={decrement} className="bg-red-500 p-2 rounded text-white"> Disminuir </button>
+                    <button onClick={reset} className="bg-gray-500 p-2 rounded text-white"> Reiniciar </button>
+                </div>
+            </div>
+        )
+    }`,
+    concepto: "."
   },
   {
     id: "5",
-    slug: "5-ManejoDeArrays",
-    titulo: "Añadir elementos a un Array",
+    slug: "5-LiveInput",
+    titulo: "Live Input",
     nivel: "Principiante",
-    descripcion: "Agregar items a una lista sin mutar el estado original.",
-    codigoIntuitivo: `items.push(newItem); setItems(items);`,
-    codigoOptimizado: `setItems([...items, newItem]);`,
-    concepto: "En React el estado es inmutable; siempre crea una copia nueva con el operador spread."
+    descripcion: "Visualizar texto mientras lo escribes en un input",
+    codigoIntuitivo: `
+    // no tenia idea de como hacerlo
+    // aprendi como traer el valor de un elemento HTML
+    // aprendi como hacer algo cuando el valor de un elemento HTML cambia`,
+    codigoOptimizado: `
+    
+    "use client";
+    import { useState } from "react";
+    
+    export default function InputRealTime() {
+      // 1. El estado inicial es un string vacío
+      const [texto, setTexto] = useState<string>("");
+    
+      // 2. La función que "escucha" el cambio
+      // 'e' es el evento, 'target' es el input, 'value' es lo que se escribió
+      const manejarCambio = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTexto(e.target.value);
+      };
+    
+      return (
+        <div className="p-10">
+          <input 
+            type="text" 
+            value={texto}           // El input "mira" al estado
+            onChange={manejarCambio} // El input "le habla" al estado
+            placeholder="Escribe algo..."
+            className="border p-2 rounded"
+          />
+          
+          {/* El párrafo solo refleja lo que hay en el estado */}
+          <p className="mt-4 font-bold text-blue-600">
+            Lo que escribes es: {texto}
+          </p>
+        </div>
+      );
+    }`,
+    concepto: "."
   },
   {
     id: "6",

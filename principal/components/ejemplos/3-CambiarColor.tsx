@@ -1,33 +1,42 @@
 "use client";
 import { useState } from "react";
 
-export default function CambiarColor () {
-    const [index, setIndex] = useState<number>(0);
+export default function CambiarColor() {
+  const [index, setIndex] = useState<number>(0);
 
-    const colores: string[] = [
+  const colores = [
+    "#FF5733", "#33FF57", "#3357FF", 
+    "#F333FF", "#FFFF33", "#33FFF5"
+  ];
 
-        "#FF5733", // Naranja vibrante
-        "#33FF57", // Verde lima
-        "#3357FF", // Azul real
-        "#F333FF", // Rosa fucsia
-        "#FFFF33", // Amarillo puro
-        "#33FFF5"  // Turquesa
-    ];
+  // Optimización 1: El operador módulo elimina la necesidad de un IF
+  const changeIndex = () => {
+    setIndex((prevIndex) => (prevIndex + 1) % colores.length);
+  };
 
-    function changeIndex () {
-    if (index > colores.length - 1 ) {
-        setIndex(0)
-    } else {
-        setIndex(index + 1)
-    }
-    }
+  // const changeIndex = () => {
+  // setIndex((prevIndex) => (prevIndex - 1 + colores.length) % colores.length);
+  // };
+  
+  // si quisiera hacerlo a la inversa
 
-    return (
-        <div>
-            <button onClick={changeIndex} className="bg-blue-600 p-4 rounded text-white"> Cambiar Color </button>
-            <div style = {{ backgroundColor: colores[index]}} className="mt-4 p-4 rounded bg-amber-500">hello</div>
-        </div>
-    )
+  return (
+    <div className="p-8">
+      <button 
+        onClick={changeIndex} 
+        className="bg-blue-600 p-4 rounded text-white active:scale-95 transition-transform"
+      >
+        Cambiar Color
+      </button>
+
+      <div 
+        style={{ backgroundColor: colores[index] }} 
+        className="mt-4 p-10 rounded shadow-lg text-white font-bold transition-colors duration-500"
+      >
+        Color actual: {colores[index]} (Índice: {index})
+      </div>
+    </div>
+  );
 }
 
 
