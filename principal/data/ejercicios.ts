@@ -321,13 +321,56 @@ export const LISTA_EJERCICIOS: Ejercicio[] = [
   },
   {
     id: "6",
-    slug: "6-LimpiezaEfectos",
-    titulo: "Cleanup en useEffect",
-    nivel: "Intermedio",
-    descripcion: "Evitar fugas de memoria (memory leaks) al usar event listeners o timers.",
-    codigoIntuitivo: `useEffect(() => { window.addEventListener('scroll', handle); }, [])`,
-    codigoOptimizado: `useEffect(() => { ... return () => window.removeEventListener('scroll', handle); }, [])`,
-    concepto: "Si abres una suscripción, debes cerrarla en la función de retorno del efecto."
+    slug: "6-ToDo",
+    titulo: "To Do",
+    nivel: "Principiante",
+    descripcion: "Lista de tareas",
+    codigoIntuitivo: `
+    // 1- aca juego con dos valores, el valor que quiero agregar y el valor del array
+    // si el valor del input es distinto de "" (o sea nada) el valor de la lista pasara a ser el valor de la lista con el valor del input al final
+    // al final de la funcion limpia el input 
+    // 2- del lado del HTML, value controla lo que vemos, onChange controla que cuando escribas algo cambie el estado y por lo tanto value
+    // (aunque para este caso concreto es util porque la funcion limpia el input al hacer onClick)
+    // 3- mapeo de cosas, la key sirve para que cada objeto del array sea unico y no se renderice todo cada vez que algo cambia
+    // y el otro parentesis corresponde al contenido del array en funcion del formato que se le dio al array`,
+    codigoOptimizado: `
+    "use client"
+    import { useState } from 'react';
+    
+    export default function ToDo () {
+        const [value, setValue] = useState<string>("");
+        const [lista, setLista] = useState<string[]>([]);
+    
+        const agregar = () => {
+            if (value.trim() !== ""){
+                setLista((prevLista) => [...prevLista, value]);
+                setValue("");
+            }
+        };
+    
+        return (
+            <div className="p-10">
+                <input 
+                    value={value} 
+                    onChange={(e) => setValue(e.target.value)}
+                    className="border p-2 mr-2 text-black"
+                    placeholder="Nueva tarea..."
+                />
+                <button onClick={agregar} className="bg-blue-500 p-2 text-white">
+                    Agregar
+                </button>
+    
+                <ul className="mt-4 list-disc pl-5">
+                    {lista.map((tarea, index) => (
+                        <li key={index} className="text-gray-700">
+                            {tarea}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        );
+    }`,
+    concepto: "."
   },
   {
     id: "7",
