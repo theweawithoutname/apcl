@@ -332,7 +332,9 @@ export const LISTA_EJERCICIOS: Ejercicio[] = [
     // 2- del lado del HTML, value controla lo que vemos, onChange controla que cuando escribas algo cambie el estado y por lo tanto value
     // (aunque para este caso concreto es util porque la funcion limpia el input al hacer onClick)
     // 3- mapeo de cosas, la key sirve para que cada objeto del array sea unico y no se renderice todo cada vez que algo cambia
-    // y el otro parentesis corresponde al contenido del array en funcion del formato que se le dio al array`,
+    // y el otro parentesis corresponde al contenido del array en funcion del formato que se le dio al array
+    // 4- en el eliminar creas una funcion que recibe un index y crea un array nuevo sin el elemento que corresponde al index
+    // luego con onclick solo llamas a la funcion y le pasas el index`,
     codigoOptimizado: `
     "use client"
     import { useState } from 'react';
@@ -374,12 +376,12 @@ export const LISTA_EJERCICIOS: Ejercicio[] = [
   },
   {
     id: "7",
-    slug: "7-FetchDeDatos",
-    titulo: "Fetching de Datos Básico",
-    nivel: "Intermedio",
-    descripcion: "Cómo cargar datos de una API al montar el componente.",
-    codigoIntuitivo: ``,
-    codigoOptimizado: ``,
+    slug: "7-ValidacionFormulario",
+    titulo: "Validacion de Formulario",
+    nivel: "Principiante",
+    descripcion: "Como validar un formulario",
+    codigoIntuitivo: `.`,
+    codigoOptimizado: `.`,
     concepto: "Manejar estados de 'loading', 'error' y 'data' es fundamental para una buena UX."
   },
   {
